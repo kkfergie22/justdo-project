@@ -1,0 +1,94 @@
+{% extends 'users/base.html' %}
+<!-- prettier-ignore -->
+{% load static %}
+<!-- prettier-ignore -->
+{% block title %}Dashboard{% endblock %}
+<!-- prettier-ignore -->
+{% block content %}
+<div class="container-fluid">
+  <!-- Header -->
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">
+        <img
+          src="{% static 'images/logos/png/logo-no-background.png' %}"
+          alt="Logo"
+          width="30"
+          height="30"
+          class="d-inline-block align-text-top"
+        />
+        JustDO
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Tasks</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Projects</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Settings</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Task List -->
+  <section>
+    <div class="row">
+      <div class="col-md-8">
+        <h2>Task List</h2>
+        <!-- Add your task list content here -->
+      </div>
+      <div class="col-md-4">
+        <h2>Task Details</h2>
+        <!-- Add your task details content here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Task Creation -->
+  <section>
+    <h2>Create Task</h2>
+    <!-- Add your task creation form here -->
+  </section>
+
+  <!-- Task Filtering and Sorting -->
+  <section>
+    <h2>Filter and Sort Tasks</h2>
+    <!-- Add your task filtering and sorting options here -->
+  </section>
+
+  <!-- Notifications and Reminders -->
+  <section>
+    <h2>Notifications and Reminders</h2>
+    <!-- Add your notifications and reminders content here -->
+  </section>
+
+  <!-- Progress Tracking -->
+  <section>
+    <h2>Progress Tracking</h2>
+    <!-- Add your progress tracking content here -->
+  </section>
+
+  <!-- User Profile and Settings -->
+  <section>
+    <h2>User Profile and Settings</h2>
+    <!-- Add your user profile and settings content here -->
+  </section>
+</div>
+
+{% endblock %}

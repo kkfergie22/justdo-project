@@ -1,0 +1,152 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  font-size: 62.5%;
+}
+body {
+  margin: 0;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.6rem;
+  line-height: 1.5;
+}
+.wrapper {
+  display: flex;
+  height: 100vh;
+}
+.column {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.column:first-child {
+  background-color: #008fff;
+}
+.column:last-child {
+  background-color: #ffffff;
+}
+/* .wrapper {
+  display: flex;
+  margin-top: 2em;
+  justify-content: center;
+  align-items: center;
+} */
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2em 0;
+  width: 100%;
+  color: #008fff;
+}
+.logo-container {
+  width: 15%;
+  margin-left: 1.5em;
+}
+.logo-container img {
+  width: 100%;
+  height: auto;
+}
+
+.nav__list {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.nav__items {
+  margin-right: 1em;
+}
+.nav__links {
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #008fff;
+}
+
+/* .container {
+  width: 50%;
+  max-width: 800px;
+} */
+
+.hero__content {
+  width: 100%;
+}
+.hero__content__img {
+  width: 30%;
+  max-width: 400px;
+  padding: 2em;
+  margin: 1em;
+}
+.hero__content__img img {
+  width: 100%;
+  height: auto;
+}
+.hero__content__text {
+  width: 80%;
+  color: #ffffff;
+  font-size: 1.6rem;
+  padding: 2em;
+  margin: 1em;
+}
+.hero__content__text h2 {
+  font-size: 4.5rem;
+  font-weight: 700;
+}
+.hero__content__text p {
+  font-size: 1.6rem;
+  line-height: 122%;
+  margin-bottom: 3em;
+}
+
+.hero__btn {
+  display: inline-block;
+  color: #008fff;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 700;
+  background-color: #ffffff;
+  padding: 0.75em 2em;
+  border-radius: 100px;
+}
+.hero__social {
+  display: flex;
+  color: #ffffff;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5em;
+}
+.social__links {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.6rem;
+  margin-bottom: 1em;
+  padding: 0.75em 2em;
+}
+.fa {
+  font-size: 2.5rem;
+  margin-right: 0.5em;
+  text-align: center;
+}
+
+/* .sidebar {
+  width: 100%;
+  margin-top: 0.5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 7em;
+  background-color: #eceeee;
+} */
+.sidebar .logo-container {
+  text-align: center;
+  margin: 0 auto;
+  border: 1px solid red;
+}

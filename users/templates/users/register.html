@@ -1,0 +1,190 @@
+{% extends 'users/base.html' %}
+<!-- prettier-ignore -->
+{% load static %}
+<!-- prettier-ignore -->
+{% block title %}Register{% endblock %}
+<!-- prettier-ignore -->
+{% block content %}
+<!-- Navigation -->
+<div class="container-sm-fluid container-md-fluid container-fluid mt-auto mb-0">
+  <header class="container d-flex align-items-center mb-auto">
+    <div>
+      <a href="#">
+        <img src="{% static 'images/logos/png/logo-no-background.png' %}" alt="logo-white" style="width: 100px; height: auto" />
+      </a>
+    </div>
+    <div class="ms-auto">
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a href="{% url '' %}" id="index-login-btn" class="nav-link px-2" style="color: #0088ff">Home</a>
+        </li>
+        <li class="nav-item">
+          <a href="#" id="index-login-btn" class="nav-link px-2" style="color: #0088ff">Features</a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'login' %}" id="index-register-btn" class="nav-link px-2" style="color: #0088ff">Login</a>
+        </li>
+      </ul>
+    </div>
+  </header>
+</div>
+<div class="container-sm-fluid container-md-fluid container-fluid d-flex flex-md-column justify-content-center align-items-center flex-column py-3" style="min-height: 95vh">
+  <div>
+    <div class="card" style="max-width: 450px">
+      <div class="card-body">
+        <form class="row" method="POST">
+          {% csrf_token %}
+          <!-- <div class="text-center mb-3">
+            <p>Sign up with:</p>
+
+            <button type="button" class="btn btn-secondary btn-floating mx-1">
+              <i class="bi bi-google"></i>
+            </button>
+          </div>
+
+          <p class="text-center">or:</p> -->
+          <h5 class="card-title text-center text-primary">Register</h5>
+
+          <!-- First Name input -->
+          <div class="col-md-6 form-outline mb-4">
+            <div class="form-group postion-relative">
+              <label class="form-label" for="firstName">First Name <span class="text-danger">*</span></label>
+              {{ form.first_name }}
+            </div>
+            <!-- <input type="text" name="fullname" id="registerName" class="form-control" required /> -->
+          </div>
+          {% if form.first_name.errors %}
+          <!-- prettier-ignore -->
+          {% for error in form.first_name.errors %}
+          <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+          </div>
+          {% endfor %}
+          <!-- prettier-ignore -->
+          {% endif %}
+
+          <!-- Last Name input -->
+
+          <div class="col-md-6 form-outline mb-4">
+            <div class="form-group form-outline position-relative">
+              <label class="form-label" for="lastName">Last Name <span class="text-danger">*</span></label>
+              {{ form.last_name }}
+            </div>
+            <!-- <input type="text" name="fullname" id="registerLastName" class="form-control" required /> -->
+          </div>
+          {% if form.last_name.errors %}
+          <!-- prettier-ignore -->
+          {% for error in form.last_name.errors %}
+          <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+          </div>
+          {% endfor %}
+          <!-- prettier-ignore -->
+          {% endif %}
+
+          <!-- Username input -->
+          <div class="col-md-12 form-outline mb-4">
+            <div class="form-group form-outline position-relative">
+              <label class="form-label" for="registerUsername">Username <span class="text-danger">*</span></label>
+              <!-- <input type="text" name="username" id="registerUsername" class="form-control" required /> -->
+              {{ form.username }}
+            </div>
+          </div>
+          {% if form.username.errors %}
+          <!-- prettier-ignore -->
+          {% for error in form.username.errors %}
+          <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+          </div>
+          {% endfor %}
+          <!-- prettier-ignore -->
+          {% endif %}
+
+          <!-- Email input -->
+          <div class="col-md-12 form-outline mb-4">
+            <div class="form-group form-outline position-relative">
+              <label class="form-label" for="registerEmail">Email <span class="text-danger">*</span></label>
+              {{ form.email }}
+              <!-- <input type="email" name="email" id="registerEmail" class="form-control" required /> -->
+            </div>
+          </div>
+          {% if form.email.errors %}
+          <!-- prettier-ignore -->
+          {% for error in form.email.errors %}
+          <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+          </div>
+          {% endfor %}
+          <!-- prettier-ignore -->
+          {% endif %}
+
+          <!-- Password input -->
+          <div class="col-md-12 form-outline mb-4">
+            <div class="form-group form-outline position-relative">
+              <label class="form-label" for="registerPassword">Password <span class="text-danger">*</span></label>
+              <!-- <input type="password" name="register_password" id="registerPassword" class="form-control" required /> -->
+              {{ form.password1 }}
+            </div>
+          </div>
+          {% if form.password1.errors %}
+          <!-- prettier-ignore -->
+          {% for error in form.password1.errors %}
+          <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+          </div>
+          {% endfor %}
+          <!-- prettier-ignore -->
+          {% endif %}
+
+          <!-- Repeat Password input -->
+          <div class="col-md-12 form-outline mb-4">
+            <div class="form-group form-outline position-relative">
+              <label class="form-label" for="registerRepeatPassword">Confirm password <span class="text-danger">*</span></label>
+              <!-- <input type="password" name="repeat_password" id="registerRepeatPassword" class="form-control" required /> -->
+              {{ form.password2 }}
+            </div>
+          </div>
+          {% if form.password2.errors %}
+          <!-- prettier-ignore -->
+          {% for error in form.password2.errors %}
+          <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+          </div>
+          {% endfor %}
+          <!-- prettier-ignore -->
+          {% endif %}
+
+          <!-- Checkbox -->
+          <div class="form-check d-flex justify-content-center mb-4">
+            {{ form.check }}
+            <label class="form-check-label" for="registerCheck">
+              I have read and agree to the <a href="#">terms</a> <span class="text-danger">*</span>
+            </label>
+            <!-- <input
+              class="form-check-input me-2"
+              type="checkbox"
+              value=""
+              id="registerCheck"
+              aria-describedby="registerCheckHelpText"
+              required
+            /> -->
+          </div>
+          {% if form.check.errors %}
+          <!-- prettier-ignore -->
+          {% for error in form.check.errors %}
+          <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+          </div>
+          {% endfor %}
+          <!-- prettier-ignore -->
+          {% endif %}
+
+          <!-- Submit button -->
+          <button type="submit" class="btn btn-primary btn-block mb-3">Register</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
