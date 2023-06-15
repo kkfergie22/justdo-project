@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-04a(v_05$sk!p!%%btq-##c3(ss*egc6%w104)in(!tprvoq6p"
+SECRET_KEY = "django-insecure-04a(v_05$sk!p!%%btq-##c3(ss*egc6%w104)in(!tprvoq6p"  # noqa
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -56,7 +56,7 @@ ROOT_URLCONF = "justdo.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates/"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -77,8 +77,12 @@ WSGI_APPLICATION = "justdo.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "justdodb",
+        "USER": "justdoadmin",
+        "PASSWORD": "kkfergie22",
+        "HOST": "localhost",
+        "PORT": "",
     }
 }
 
@@ -133,3 +137,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_REDIRECT_URL = "home_page"
 LOGIN_URL = "login"
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

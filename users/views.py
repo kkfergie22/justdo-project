@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy
 from .forms import RegistrationForm
 
 
 def index(request):
-    return render(request, "users/index.html", {})
+    return render(request, "index_carousel.html")
 
 
 def register(request):
@@ -21,7 +23,6 @@ def register(request):
             messages.success(request, f"{user} account created successfully")
             return redirect("home_page")
     else:
-        print("Invalid form")
         context = {"form": form}
         messages.error(request, "Error processing your request")
         return render(request, "users/register.html", context)
@@ -30,4 +31,8 @@ def register(request):
 
 
 def terms(request):
-    return render(request, "users/terms_and_conditions.html")
+    return render(request, "terms_and_conditions.html")
+
+
+def features(request):
+    return render(request, "features.html")

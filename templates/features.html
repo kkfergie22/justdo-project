@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+<!-- prettier-ignore -->
+{% block title %}Features{% endblock %}
+<!-- prettier-ignore -->
+{% load static %}
+<!-- prettier-ignore -->
+{% block content %}
+<!-- Navigation -->
+{% include 'base_nav.html' %}
+<div class="container mt-5">
+  <h1 class="text-center mb-4">Features</h1>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Task Management</h5>
+          <p class="card-text">Efficiently manage your tasks with a simple and intuitive interface. Create, edit, and
+            organize your tasks easily.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Collaboration</h5>
+          <p class="card-text">Work together with your team members and share task lists. Collaborate in real-time and
+            stay updated on progress.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Reminders</h5>
+          <p class="card-text">Set reminders for important tasks and deadlines. Never miss a deadline with JustDo's
+            reminder feature.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Subtasks</h5>
+          <p class="card-text">Break down complex tasks into smaller subtasks. Easily manage and track the progress of
+            each subtask.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Due Dates</h5>
+          <p class="card-text">Assign due dates to tasks and stay organized. JustDo will help you prioritize tasks
+            based on their deadlines.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Mobile App</h5>
+          <p class="card-text">Access your tasks and manage them on the go with the JustDo mobile app. Available for
+            both iOS and Android.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<footer class="bg-light text-center py-4 mt-5">
+  <div class="container">
+    <span class="text-muted">JustDo App &copy; 2023. All rights reserved.</span>
+  </div>
+</footer>
+{% endblock %}

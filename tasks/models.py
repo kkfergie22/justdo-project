@@ -1,3 +1,179 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.utils import timezone
 
-# Create your models here.
+
+class TaskManager(models.Manager):
+    def create_task(self, user, title, description, due_date, status,
+                    priority):
+        """
+        Create a new task.
+
+        Args:
+            user (User): The user associated with the task.
+            title (str): The title of the task.
+            description (str): The description of the task.
+            due_date (datetime): The due date of the task.
+            status (str): The status of the task.
+            priority (str): The priority of the task.
+
+        Returns:
+            Task: The created task.
+        """
+
+        try:
+            user = User.objects.get(pk=user.pk)
+
+        except ValueError as e:
+            raise ValueError("Invalid user or category") from e
+
+        created_on = timezone.now()
+        last_updated_on = timezone.now()
+        task = self.create(user=user, title=title, description=description,
+                           due_date=due_date, status=status,
+                           priority=priority, created_on=created_on,
+                           last_updated_on=last_updated_on)
+        return task
+
+    def delete_task(self, task_id):
+        """
+        Delete a task.
+
+        Args:
+            task_id (int): The ID of the task to delete.
+        """
+        try:
+            task = self.get(pk=task_id)
+            task.delete()
+        except ValueError as e:
+            raise ValueError("Task not found.") from e
+
+    def edit_task(self, task_id, title, description, due_date, status,
+                  priority):
+        """
+        Edit an existing task.
+
+        Args:
+            task_id (int): The ID of the task to edit.
+            title (str): The new title of the task.
+            description (str): The new description of the task.
+            due_date (datetime): The new due date of the task.
+            status (str): The new status of the task.
+            categories (list): The new categories associated with the task.
+            priority (str): The new priority of the task.
+
+        Returns:
+            Task: The edited task.
+        """
+        try:
+            task = self.get(pk=task_id)
+            # categories = Category.objects.filter(pk__in=categories)
+        except ValueError as e:
+            raise ValueError("Task not found") from e
+
+        task.title = title
+        task.description = description
+        task.due_date = due_date
+        task.status = status
+        task.priority = priority
+        task.last_updated_on = timezone.now()
+        task.save()
+        return task
+
+
+class Task(models.Model):
+    PENDING = 'P'
+    COMPLETED = 'C'
+    IN_PROGRESS = 'IP'
+
+    STATUS_CHOICES = [
+        (PENDING, 'Pending'),
+        (COMPLETED, 'Completed'),
+        (IN_PROGRESS, 'In Progress'),
+    ]
+
+    HIGH = 'H'
+    MEDIUM = 'M'
+    LOW = 'L'
+
+    PRIORITY_CHOICES = [
+        (HIGH, 'High'),
+        (MEDIUM, 'Medium'),
+        (LOW, 'Low'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    title = models.CharField(max_length=255)
+    description = models.TextField(max_length=255, null=True, blank=True)
+    due_date = models.DateTimeField()
+    status = models.CharField(max_length=2, choices=STATUS_CHOICES,
+                              default=PENDING)
+    priority = models.CharField(max_length=2, choices=PRIORITY_CHOICES,
+                                default=LOW)
+    created_on = models.DateTimeField(auto_now_add=True)
+    last_updated_on = models.DateTimeField(auto_now=True)
+
+    objects = TaskManager()
+
+    class Meta:
+        ordering = ["due_date", "priority", "status", "-last_updated_on",
+                    "-created_on"]
+        verbose_name_plural = "Tasks"
+
+    def __str__(self):
+        """Return a string representation of the task"""
+        return self.title
+
+    def mark_completed(self):
+        """
+        Mark the task as completed and update user XP.
+        """
+
+        self.status = self.COMPLETED
+        self.save()
+
+        # Update user's XP
+        profile = self.user.userprofile
+        profile.xp += 20
+        profile.save()
+
+    def is_overdue(self):
+        """
+        Check if the task is overdue.
+
+        Returns:
+            bool: True if the task is overdue, False otherwise.
+        """
+        return self.due_date < timezone.now()
+
+    @property
+    def created_by(self):
+        """
+        Get the user who created the task.
+
+        Returns:
+            User: The User object who created the task.
+        """
+        return self.user
+
+    @property
+    def days_until_due(self):
+        """
+        Get the number of days until the task is due.
+
+        Returns:
+            int: The number of days until the task is due.
+        """
+        now = timezone.now()
+        time_until_due = self.due_date - now
+        return time_until_due.days if time_until_due.days >= 0 else 0
+
+    @property
+    def is_high_priority(self):
+        """
+        Check if the task has high priority.
+
+        Returns:
+            bool: True if the task has high priority, False otherwise.
+        """
+        return self.priority == self.HIGH

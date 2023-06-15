@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+<!-- prettier-ignore -->
+{% block title %}My Tasks{% endblock %}
+<!-- prettier-ignore -->
+{% block content %}
+{% if user.is_authenticated %}
+{% include 'profile_navigation.html' %}
+{% endif %}
+<section>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="text-primary fs-7 fw-bold text-center">Here are your tasks</h5>
+      {% if tasks %}
+      <table class="table align-middle mb-0 bg-light">
+        <thead class="bg-light">
+          <tr>
+            <th></th>
+            <th>Task</th>
+            <th>Status</th>
+            <th>Priority</th>
+            <th>Due Date</th>
+            <th>Days Remaining</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for task in tasks %}
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>{{ task.title }}</td>
+            <td>{% if task.status == "P" %}<span class="badge rounded-pill d-inline bg-primary">Pending</span>{% elif task.status == "C" %}<span class="badge rounded-pill d-inline bg-success">Completed</span>{% else %}<span class="badge rounded-pill d-inline bg-warning">In Progress</span>{% endif %}</td>
+            <td>{% if task.priority == "H" %}<span class="badge rounded-pill d-inline bg-danger">High</span>{% elif task.priority == "M" %}<span class="badge rounded-pill d-inline bg-warning">Medium</span>{% else %}<span class="badge rounded-pill d-inline bg-primary">Low</span>{% endif %}</td>
+            <td>{{ task.due_date }}</td>
+            <td>{{ task.days_until_due }}</td>
+            <td>
+              <div class="tasks-control">
+                <a href="{% url 'update-task' task.id %}"><i class="bi bi-pen"></i></a>
+                <a href="{% url 'delete-task' task.id %}"><i class="bi bi-trash"></i></a>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p class="text-center">You have no tasks yet <a href="{% url 'create-task' %}" class="text-primary">create</a> one or view your dashboard</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

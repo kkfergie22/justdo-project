@@ -18,7 +18,7 @@ class RegistrationForm(UserCreationForm):
         required=True,
         help_text="Enter your surname",
         widget=forms.TextInput(
-            attrs={"id": "lastName", "class": "form-control", "placeholder": "Surname"}
+            attrs={"id": "lastName", "class": "form-control", "placeholder": "Surname"}  # noqa
         ),
     )
 
@@ -40,7 +40,7 @@ class RegistrationForm(UserCreationForm):
         required=True,
         help_text="Enter your fullname",
         widget=forms.TextInput(
-            attrs={"class": "form-control", "placeholder": "example@example.com"}
+            attrs={"class": "form-control", "placeholder": "example@example.com"}  # noqa
         ),
     )
 
@@ -49,7 +49,7 @@ class RegistrationForm(UserCreationForm):
         required=True,
         help_text="Enter your fullname",
         widget=forms.PasswordInput(
-            attrs={"class": "form-control", "placeholder": "Create your password"}
+            attrs={"class": "form-control", "placeholder": "Create your password"}  # noqa
         ),
     )
 

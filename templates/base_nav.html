@@ -1,0 +1,44 @@
+{% load static %}
+{% if request.path == "/" %}
+<header class="container d-flex justify-content-center align-items-center mb-auto bg-primary w-50">
+  <div>
+    <a href="{% url 'home_page' %}">
+      <img src="{% static 'images/logos/png/justdo-high-resolution-logo-white-on-transparent-background.png' %}" alt="logo-white" style="width: 100px; height: auto" />
+    </a>
+  </div>
+  <div class="ms-auto">
+    <ul class="nav nav-pills">
+      <li class="nav-item">
+        <a href="{% url 'home_page' %}" id="index-login-btn" class="nav-link px-2" style="color: #ffffff">Home</a>
+      </li>
+      <li class="nav-item">
+        <a href="{% url 'features' %}" class="nav-link px-2" style="color: #ffffff">Features</a>
+      </li>
+      <li class="nav-item">
+        <a href="{% url 'login' %}" id="index-register-btn" class="nav-link px-2" style="color: #ffffff">Login</a>
+      </li>
+    </ul>
+  </div>
+</header>
+{% else %}
+<header class="container d-flex justify-content-center align-items-center mb-auto">
+  <div>
+    <a href="{% url 'home_page' %}">
+      <img src="{% static 'images/logos/png/logo-no-background.png' %}" alt="logo-white" style="width: 100px; height: auto" />
+    </a>
+  </div>
+  <div class="ms-auto">
+    <ul class="nav nav-pills">
+      <li class="nav-item">
+        <a href="{% url 'home_page' %}" id="index-login-btn" class="nav-link px-2" style="color: #0088ff">Home</a>
+      </li>
+      <li class="nav-item">
+        <a href="{% url 'features' %}" class="nav-link px-2" style="color: #0088ff">Features</a>
+      </li>
+      <li class="nav-item">
+        <a href="{% url 'login' %}" id="index-register-btn" class="nav-link px-2" style="color: #0088ff">Login</a>
+      </li>
+    </ul>
+  </div>
+</header>
+{% endif %}

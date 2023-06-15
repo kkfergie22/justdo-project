@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+<!-- prettier-ignore -->
+{% block title %}Home{% endblock %}
+<!-- prettier-ignore -->
+{% load static %}
+<!-- prettier-ignore -->
+{% block content %}
+<div class="bg-primary">
+  <div>
+    {% if user.is_authenticated %}
+    {% include 'profile_navigation.html' %}
+    {% else %}
+    {% include 'base_nav.html' %}
+    {% endif %}
+  </div>
+</div>
+<div id="carouselExampleInterval" class="carousel slide vh-100" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <!-- Page 1 -->
+    <div class="carousel-item bg-primary vh-100 active" data-bs-interval="5000">
+      <div class="row d-flex justify-content-center">
+        <div class="col-md primary text-white p5">
+          <div class="d-flex flex-sm-column flex-md-column flex-column align-items-center justify-content-center mt-3">
+            <div class="mt-5 p-3" style="max-width: 42em">
+              <h2 class="display-4 mb-4 fs-7 fw-bold text-bold text-left">
+                JustDO it now!<br />
+                Better, Simple and Easy
+              </h2>
+              <p>
+                JustDO is a simple todo list app that helps you get things done. Whether you're planning a holiday, sharing
+                a shopping list with a partner or managing multiple work projects, JustDO is here to help you tick off all
+                your personal and professional to-dos.
+              </p>
+              <a href="{% url 'register' %}" class="_btn _btn-light _btn-lg mt-4" style="color: #0088ff">Get Started</a>
+            </div>
+            <div class="d-flex justify-content-center align-items-center m-5 p-3">
+              <h6 class="mx-3 mt-2">Contact Us:</h6>
+              <a href="#" class="text-white text-decoration-none text-center mx-4"><i class="bi bi-twitter"></i>Twitter</a>
+              <a href="#" class="text-white text-decoration-none text-center mx-4"><i class="bi bi-linkedin"></i>LinkedIn</a>
+              <a href="#" class="text-white text-decoration-none text-center mx-4"><i class="bi bi-envelope"></i>Email</a>
+              <a href="#" class="text-white text-decoration-none text-center mx-4"><i class="bi bi-github"></i>Github</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- Page 2 Features -->
+    <div class="carousel-item vh-100" data-bs-interval="5000" style="background-color: #ffffff">
+      <div class="row d-flex justify-content-center">
+        <div class="col-md primary p5" style="color:#0088ff">
+          <div class="d-flex flex-sm-column flex-md-column flex-column align-items-center justify-content-center mt-3">
+            <div class="mt-5 p-3" style="max-width: 42em">
+              <h2 class="display-4 mb-4 fs-7 fw-bold text-bold text-left">
+                Streamline Your Workflow and Stay on Top of Your Tasks.
+              </h2>
+              <p>
+                JustDo goes beyond basic task management, offering a range of additional features to enhance your productivity. From reminders and subtasks to notes and progress tracking, it's the all-in-one solution you need to stay organized and achieve your goals.
+              </p>
+              <a href="{% url 'features' %}" id="get-started-btn" class="_btn _btn-primary _btn-lg mt-4" style="color: #ffffff">Learn More</a>
+            </div>
+            <div class="d-flex justify-content-center align-items-center m-5 p-3">
+              <h6 class="mx-3 mt-2">Contact Us:</h6>
+              <a href="#" class="text-decoration-none text-center mx-4"><i class="bi bi-twitter"></i>Twitter</a>
+              <a href="#" class="text-decoration-none text-center mx-4"><i class="bi bi-linkedin"></i>LinkedIn</a>
+              <a href="#" class="text-decoration-none text-center mx-4"><i class="bi bi-envelope"></i>Email</a>
+              <a href="#" class="text-decoration-none text-center mx-4"><i class="bi bi-github"></i>Github</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Page 3 -->
+    <div class="carousel-item vh-100 bg-dark">
+      <div class="row d-flex justify-content-center">
+        <div class="col-md text-primary p5">
+          <div class="d-flex flex-sm-column flex-md-column flex-column align-items-center justify-content-center mt-3">
+            <div class="mt-5 p-3" style="max-width: 42em">
+              <h2 class="display-4 mb-4 fs-7 fw-bold text-bold text-left">
+                Effortlessly Manage Your Tasks and Projects.
+              </h2>
+              <p>
+                JustDo empowers you with a comprehensive set of features to effectively manage your tasks and projects. Take control of your to-do list and experience a new level of productivity and organization..
+              </p>
+              <a href="{% url 'login' %}" class="_btn _btn-light _btn-lg mt-4" style="color: #0088ff">Login</a>
+            </div>
+            <div class="d-flex justify-content-center align-items-center m-5 p-3">
+              <h6 class="mx-3 mt-2">Contact Us:</h6>
+              <a href="#" class="text-decoration-none text-center mx-4"><i class="bi bi-twitter"></i>Twitter</a>
+              <a href="#" class="text-decoration-none text-center mx-4"><i class="bi bi-linkedin"></i>LinkedIn</a>
+              <a href="#" class="text-decoration-none text-center mx-4"><i class="bi bi-envelope"></i>Email</a>
+              <a href="#" class="text-decoration-none text-center mx-4"><i class="bi bi-github"></i>Github</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+  <span class="visually-hidden">Previous</span>
+</button>
+<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+  <span class="visually-hidden">Next</span>
+</button>
+{% endblock %}
+```

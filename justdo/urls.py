@@ -17,14 +17,31 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from users import views as user_views
+from tasks import views as task_views
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import (PasswordResetView,
+                                       PasswordResetCompleteView,
+                                       PasswordResetConfirmView,
+                                       PasswordResetDoneView)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", user_views.index, name="home_page"),
-    path("login/", auth_views.LoginView.as_view(template_name="users/login.html"),
-         name="login"),
+    path("login/", auth_views.LoginView.as_view(template_name='users/login.html'), name="login"),  # noqa
+    path("logout/", auth_views.LogoutView.as_view(next_page='home_page'), name="logout"),  # noqa
     path("register/", user_views.register, name="register"),
+    path("password-reset/", PasswordResetView.as_view(
+        template_name="users/password-reset.html", html_email_template_name='users/password_reset_email.html'), name="password-reset"),  # noqa
+
+    path('password-reset/done/', PasswordResetDoneView.as_view(
+        template_name='users/password_reset_done.html'),
+         name='password_reset_done'),  # noqa
+
+    path('password-reset-confirm/<uidb64>/<token>/',
+         PasswordResetConfirmView.as_view(template_name='users/password_reset_confirm.html')),  # noqa
+      path('password-reset-complete/', PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'), name='password_reset_complete'),  # noqa
     path("terms/", user_views.terms, name="terms"),
-    path("users/", include("users.urls")),
+    path("features/", user_views.features, name="features"),
+    path("", include("users.urls")),
+    path("tasks/", include("tasks.urls"), name="tasks"),
 ]
