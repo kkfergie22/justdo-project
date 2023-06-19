@@ -8,6 +8,7 @@ django = "*"
 pillow = "*"
 pycodestyle = "*"
 psycopg2 = "*"
+django-tempus-dominus = "*"
 
 [dev-packages]
 

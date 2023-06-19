@@ -82,12 +82,12 @@ class TaskManager(models.Manager):
 
 
 class Task(models.Model):
-    PENDING = 'P'
+    NOT_STARTED = 'P'
     COMPLETED = 'C'
     IN_PROGRESS = 'IP'
 
     STATUS_CHOICES = [
-        (PENDING, 'Pending'),
+        (NOT_STARTED, 'Not Started'),
         (COMPLETED, 'Completed'),
         (IN_PROGRESS, 'In Progress'),
     ]
@@ -105,9 +105,9 @@ class Task(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=255)
     description = models.TextField(max_length=255, null=True, blank=True)
-    due_date = models.DateTimeField()
+    due_date = models.DateField()
     status = models.CharField(max_length=2, choices=STATUS_CHOICES,
-                              default=PENDING)
+                              default=NOT_STARTED)
     priority = models.CharField(max_length=2, choices=PRIORITY_CHOICES,
                                 default=LOW)
     created_on = models.DateTimeField(auto_now_add=True)
@@ -133,8 +133,17 @@ class Task(models.Model):
         self.save()
 
         # Update user's XP
+        base_xp = 20
+        completion_time = self.due_date - timezone.now()
+        if completion_time < 24 * 3600:
+            bonus_xp = 20
+        elif completion_time < 48 * 3600:
+            bonus_xp = 15
+        else:
+            bonus_xp = 5
+
         profile = self.user.userprofile
-        profile.xp += 20
+        profile.xp = base_xp + bonus_xp
         profile.save()
 
     def is_overdue(self):

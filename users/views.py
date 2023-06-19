@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 from .forms import RegistrationForm
+from .models import UserProfile
 
 
 def index(request):
@@ -18,9 +19,9 @@ def register(request):
     if request.method == "POST":
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
-            user = form.cleaned_data.get("username")
-            messages.success(request, f"{user} account created successfully")
+            user = form.save()
+            UserProfile.objects.create(user=user)
+            messages.success(request, f"{user.username} account created successfully")  # noqa
             return redirect("home_page")
     else:
         context = {"form": form}

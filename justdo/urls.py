@@ -27,7 +27,7 @@ from django.contrib.auth.views import (PasswordResetView,
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", user_views.index, name="home_page"),
-    path("login/", auth_views.LoginView.as_view(template_name='users/login.html'), name="login"),  # noqa
+    path("login/", auth_views.LoginView.as_view(template_name='users/login.html', next_page="dashboard"), name="login"),  # noqa
     path("logout/", auth_views.LogoutView.as_view(next_page='home_page'), name="logout"),  # noqa
     path("register/", user_views.register, name="register"),
     path("password-reset/", PasswordResetView.as_view(

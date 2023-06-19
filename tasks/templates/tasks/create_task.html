@@ -1,0 +1,78 @@
+<!-- HTML Form Template -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Create Task{% endblock %}
+{% block content %}
+<form method="post" novalidate class="w-100 d-flex flex-md-column">
+  {% csrf_token %}
+
+  <!-- Title Field -->
+  <div class="mb-3">
+    <label for="id_title" class="form-label">Title</label>
+    <input type="text" class="form-control" id="id_title" name="title" required>
+  </div>
+
+  <!-- Description Field -->
+  <div class="mb-3">
+    <label for="id_description" class="form-label">Description</label>
+    <textarea class="form-control" id="id_description" name="description" rows="3"></textarea>
+  </div>
+
+  <!-- Due Date Field -->
+  <div class="mb-3">
+    <label for="id_due_date" class="form-label">Due Date</label>
+    <div class="input-group date" id="datetimepicker" data-target-input="nearest">
+      <input type="text" class="form-control datetimepicker-input" id="id_due_date" name="due_date" data-target="#datetimepicker" placeholder="YYYY-MM-DD" required>
+      <div class="input-group-append" data-target="#datetimepicker" data-toggle="datetimepicker">
+        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status Field -->
+  <div class="mb-3">
+    <label for="id_status" class="form-label">Status</label>
+    <select class="form-select" id="id_status" name="status">
+      <option value="Not Started">Not Started</option>
+      <option value="In Progress">In Progress</option>
+      <option value="Completed">Completed</option>
+    </select>
+  </div>
+
+  <!-- Priority Field -->
+  <div class="mb-3">
+    <label for="id_priority" class="form-label">Priority</label>
+    <select class="form-select" id="id_priority" name="priority">
+      <option value="Low">Low</option>
+      <option value="Medium">Medium</option>
+      <option value="High">High</option>
+    </select>
+  </div>
+
+  <!-- Form Buttons -->
+  <div>
+    <button type="submit" class="_btn _btn-primary">Save</button>
+    <a href="{% url 'tasks' %}" class="btn-danger">Cancel</a>
+  </div>
+</form>
+
+<!-- Scripts -->
+<script>
+  $(function () {
+    $('#datetimepicker').datetimepicker({
+      format: 'YYYY-MM-DD',
+      icons: {
+        time: 'fa fa-clock',
+        date: 'fa fa-calendar',
+        up: 'fa fa-chevron-up',
+        down: 'fa fa-chevron-down',
+        previous: 'fa fa-chevron-left',
+        next: 'fa fa-chevron-right',
+        today: 'fa fa-calendar-check-o',
+        clear: 'fa fa-trash',
+        close: 'fa fa-times'
+      }
+    });
+  });
+</script>
+{% endblock %}

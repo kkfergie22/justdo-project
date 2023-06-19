@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} dashboard {% endblock %}
+{% block content %}
+{% include 'profile_navigation.html' %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6 p-5">
+      <div class="row border rounded-2 p-5">
+        <h5 class="text-primary">Welcome, {{ user.username }}</h5>
+        <p class="fs-4">
+          What are you doing today? <a href="{% url 'create-task' %}" class="text-decoration-none">Create a task</a>
+        </p>
+        <div class="d-flex p-3">
+          <div class="d-flex justify-content-center align-items-center border border-primary rounded-circle border-3 mx-3" style="width: 200px; height: 200px;">
+            <h1 class="fw-bold fs-7 text-primary">{{ xp }}XP</h1>
+          </div>
+          <div class="p-3 mx-4 list-group">
+
+            <p class="list-group-item text-primary">
+              You have <span class="fw-bold">{{ due_today }}</span> tasks due today
+            </p>
+
+            <p class="list-group-item text-primary">
+              You have <span class="fw-bold">{{ overdue }} </span> tasks overdue
+            </p>
+
+            <p class="list-group-item text-primary">
+              You have <span class="fw-bold">{{ in_progress }}</span> tasks In Progress
+            </p>
+
+            <p class="list-group-item text-primary">
+              You have <span class="fw-bold">{{ not_started }}</span> tasks Not Started
+            </p>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="col-md-6 mt-5 p-5">
+      <!-- Task list section -->
+      <h5 class="text-primary">Upcoming Tasks</h5>
+      <!-- Add task list content here -->
+      {% if tasks %}
+      <div>
+        {% csrf_token %}
+        {% for task in tasks %}
+        <div class="list-group">
+
+          <li class="d-flex justify-content-between p-3 list-group-item"><span><input type="checkbox" data-task-id="{{ task.id }}" class="task-checkbox"></span>{{ task.title }}</li>
+
+        </div>
+
+        {% endfor %}
+      </div>
+      {% else %}
+      <h3 class="my-0 mx-auto text-center">You have no tasks <span><a href="{% url 'create-task' %}"> create one</a> now</span></h3>
+      {% endif %}
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}
