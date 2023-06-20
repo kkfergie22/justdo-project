@@ -13,7 +13,7 @@
         </p>
         <div class="d-flex p-3">
           <div class="d-flex justify-content-center align-items-center border border-primary rounded-circle border-3 mx-3" style="width: 200px; height: 200px;">
-            <h1 class="fw-bold fs-7 text-primary">{{ xp }}XP</h1>
+            <h1 class="fw-bold fs-7 text-primary">{{ xp }} XP</h1>
           </div>
           <div class="p-3 mx-4 list-group">
 
@@ -41,18 +41,22 @@
     <div class="col-md-6 mt-5 p-5">
       <!-- Task list section -->
       <h5 class="text-primary">Upcoming Tasks</h5>
-      <!-- Add task list content here -->
+      <!-- Task List Content -->
       {% if tasks %}
       <div>
-        {% csrf_token %}
-        {% for task in tasks %}
-        <div class="list-group">
-
-          <li class="d-flex justify-content-between p-3 list-group-item"><span><input type="checkbox" data-task-id="{{ task.id }}" class="task-checkbox"></span>{{ task.title }}</li>
-
-        </div>
-
-        {% endfor %}
+        <form method="POST" id="taskForm">
+          {% csrf_token %}
+          {% for task in tasks %}
+          <div class="list-group">
+            <li class="d-flex p-3 list-group-item">
+              <span><input class="task-checkbox mx-3" name="completed_tasks" type="checkbox" value="{{ task.id }}" id="task_{{ task.id }}" {% if task.complete %}checked{% endif %} onchange="markTaskCompleted(this)"></span>
+              <a href="{% url 'tasks' %}" class="text-decoration-none text-black">
+                {{ task.title }}
+              </a>
+            </li>
+          </div>
+          {% endfor %}
+        </form>
       </div>
       {% else %}
       <h3 class="my-0 mx-auto text-center">You have no tasks <span><a href="{% url 'create-task' %}"> create one</a> now</span></h3>
@@ -63,4 +67,29 @@
 </div>
 </div>
 </div>
+<script>
+  function markTaskCompleted(checkbox) {
+    var taskId = checkbox.value;
+    var csrfToken = '{{ csrf_token }}';
+
+    if (checkbox.checked) {
+      $.ajax({
+        url: '/tasks/mark-completed/' + taskId + '/',
+        type: 'POST',
+        data: { csrfmiddlewaretoken: csrfToken },
+        success: function () {
+          console.log('Task marked as completed');
+          // You can perform additional actions here if needed
+        },
+        error: function (error) {
+          console.log('Error marking task as completed', error);
+          // Handle the error if necessary
+          checkbox.checked = false; // Uncheck the checkbox if an error occurs
+        }
+      });
+    } else {
+      // Handle the case when the checkbox is unchecked if needed
+    }
+  }
+</script>
 {% endblock %}

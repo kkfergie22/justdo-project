@@ -4,6 +4,7 @@ from django.contrib import messages
 from .models import Task
 from django.http import JsonResponse
 from .forms import TaskForm
+from django.utils import timezone
 
 
 @login_required
@@ -89,3 +90,10 @@ def dashboard(request):
         "xp": xp
         }
     return render(request, "tasks/dashboard.html", context)
+
+
+@login_required
+def mark_completed(request, pk):
+    task = get_object_or_404(Task, pk=pk)
+    task.mark_completed()
+    return JsonResponse({'status': 'success'})

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from datetime import timedelta
 
 
 class TaskManager(models.Manager):
@@ -105,13 +106,14 @@ class Task(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=255)
     description = models.TextField(max_length=255, null=True, blank=True)
-    due_date = models.DateField()
+    due_date = models.DateTimeField()
     status = models.CharField(max_length=2, choices=STATUS_CHOICES,
                               default=NOT_STARTED)
     priority = models.CharField(max_length=2, choices=PRIORITY_CHOICES,
                                 default=LOW)
     created_on = models.DateTimeField(auto_now_add=True)
     last_updated_on = models.DateTimeField(auto_now=True)
+    complete = models.BooleanField(default=False)
 
     objects = TaskManager()
 
@@ -135,9 +137,10 @@ class Task(models.Model):
         # Update user's XP
         base_xp = 20
         completion_time = self.due_date - timezone.now()
-        if completion_time < 24 * 3600:
+        one_day = timedelta(days=1)
+        if completion_time < one_day:
             bonus_xp = 20
-        elif completion_time < 48 * 3600:
+        elif completion_time < 2 * one_day:
             bonus_xp = 15
         else:
             bonus_xp = 5
