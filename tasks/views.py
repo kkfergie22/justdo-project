@@ -25,6 +25,7 @@ def create_task(request):
             task = form.save()
             task.user = request.user
             task.save()
+            print(task.user)
             messages.success(request, "Task created successfully.")
             return redirect('tasks')
     else:
@@ -58,6 +59,9 @@ def delete_task(request, pk):
 
 @login_required
 def dashboard(request):
+    completed_tasks = request.session.get('completed_tasks', [])
+    completed_tasks = [str(task_id) for task_id in completed_tasks]
+
     user_profile = request.user.userprofile
     xp = user_profile.xp
 
@@ -65,27 +69,24 @@ def dashboard(request):
     completed = 0
     in_progress = 0
     not_started = 0
-    overdue = 0
     due_today = 0
 
     for t in task:
-        if t.days_until_due == 0:
+        if t.due_date == timezone.now().date():
             due_today += 1
-        if t.is_overdue:
-            overdue += 1
-        if t.status == "Completed":
+        if t.status == "C":
             completed += 1
-        if t.status == "In Progress":
+        if t.status == "IP":
             in_progress += 1
-        if t.status == "Not Started":
+        if t.status == "P":
             not_started += 1
 
     context = {
         "tasks": task,
+        "completed_tasks": completed_tasks,
         "completed": completed,
         "in_progress": in_progress,
         "not_started": not_started,
-        "overdue": overdue,
         "due_today": due_today,
         "xp": xp
         }

@@ -1,11 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-from datetime import timedelta
+from datetime import timedelta, date
 
 
 class TaskManager(models.Manager):
-    def create_task(self, user, title, description, due_date, status,
+    def create_task(self, user, title, due_date, status,
                     priority):
         """
         Create a new task.
@@ -13,7 +13,6 @@ class TaskManager(models.Manager):
         Args:
             user (User): The user associated with the task.
             title (str): The title of the task.
-            description (str): The description of the task.
             due_date (datetime): The due date of the task.
             status (str): The status of the task.
             priority (str): The priority of the task.
@@ -30,7 +29,7 @@ class TaskManager(models.Manager):
 
         created_on = timezone.now()
         last_updated_on = timezone.now()
-        task = self.create(user=user, title=title, description=description,
+        task = self.create(user=user, title=title,
                            due_date=due_date, status=status,
                            priority=priority, created_on=created_on,
                            last_updated_on=last_updated_on)
@@ -49,7 +48,7 @@ class TaskManager(models.Manager):
         except ValueError as e:
             raise ValueError("Task not found.") from e
 
-    def edit_task(self, task_id, title, description, due_date, status,
+    def edit_task(self, task_id, title, due_date, status,
                   priority):
         """
         Edit an existing task.
@@ -58,9 +57,8 @@ class TaskManager(models.Manager):
             task_id (int): The ID of the task to edit.
             title (str): The new title of the task.
             description (str): The new description of the task.
-            due_date (datetime): The new due date of the task.
+            due_date (date): The new due date of the task.
             status (str): The new status of the task.
-            categories (list): The new categories associated with the task.
             priority (str): The new priority of the task.
 
         Returns:
@@ -68,12 +66,10 @@ class TaskManager(models.Manager):
         """
         try:
             task = self.get(pk=task_id)
-            # categories = Category.objects.filter(pk__in=categories)
         except ValueError as e:
             raise ValueError("Task not found") from e
 
         task.title = title
-        task.description = description
         task.due_date = due_date
         task.status = status
         task.priority = priority
@@ -105,15 +101,13 @@ class Task(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=255)
-    description = models.TextField(max_length=255, null=True, blank=True)
-    due_date = models.DateTimeField()
+    due_date = models.DateField()
     status = models.CharField(max_length=2, choices=STATUS_CHOICES,
                               default=NOT_STARTED)
     priority = models.CharField(max_length=2, choices=PRIORITY_CHOICES,
                                 default=LOW)
     created_on = models.DateTimeField(auto_now_add=True)
     last_updated_on = models.DateTimeField(auto_now=True)
-    complete = models.BooleanField(default=False)
 
     objects = TaskManager()
 
@@ -136,7 +130,7 @@ class Task(models.Model):
 
         # Update user's XP
         base_xp = 20
-        completion_time = self.due_date - timezone.now()
+        completion_time = self.due_date - date.today()
         one_day = timedelta(days=1)
         if completion_time < one_day:
             bonus_xp = 20
@@ -156,7 +150,8 @@ class Task(models.Model):
         Returns:
             bool: True if the task is overdue, False otherwise.
         """
-        return self.due_date < timezone.now()
+        now = timezone.now().date()
+        return self.due_date < now
 
     @property
     def created_by(self):
@@ -176,7 +171,7 @@ class Task(models.Model):
         Returns:
             int: The number of days until the task is due.
         """
-        now = timezone.now()
+        now = timezone.now().date()
         time_until_due = self.due_date - now
         return time_until_due.days if time_until_due.days >= 0 else 0
 

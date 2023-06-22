@@ -18,19 +18,15 @@
           <div class="p-3 mx-4 list-group">
 
             <p class="list-group-item text-primary">
-              You have <span class="fw-bold">{{ due_today }}</span> tasks due today
+              You have <span class="fw-bold">{{ due_today }}</span> {% if due_today == 1 %}task due today{% else %} tasks due today {% endif %}
             </p>
 
             <p class="list-group-item text-primary">
-              You have <span class="fw-bold">{{ overdue }} </span> tasks overdue
+              You have <span class="fw-bold">{{ in_progress }}</span> {% if in_progress == 1 %}task in progress{% else %} tasks in progress {% endif %}
             </p>
 
             <p class="list-group-item text-primary">
-              You have <span class="fw-bold">{{ in_progress }}</span> tasks In Progress
-            </p>
-
-            <p class="list-group-item text-primary">
-              You have <span class="fw-bold">{{ not_started }}</span> tasks Not Started
+              You have <span class="fw-bold">{{ not_started }}</span> {% if not_started == 1 %}task pending{% else %} tasks pending {% endif %}
             </p>
 
           </div>
@@ -38,34 +34,51 @@
 
       </div>
     </div>
+    <!-- Task list section -->
     <div class="col-md-6 mt-5 p-5">
-      <!-- Task list section -->
-      <h5 class="text-primary">Upcoming Tasks</h5>
       <!-- Task List Content -->
       {% if tasks %}
       <div>
-        <form method="POST" id="taskForm">
-          {% csrf_token %}
-          {% for task in tasks %}
-          <div class="list-group">
-            <li class="d-flex p-3 list-group-item">
-              <span><input class="task-checkbox mx-3" name="completed_tasks" type="checkbox" value="{{ task.id }}" id="task_{{ task.id }}" {% if task.complete %}checked{% endif %} onchange="markTaskCompleted(this)"></span>
-              <a href="{% url 'tasks' %}" class="text-decoration-none text-black">
-                {{ task.title }}
-              </a>
-            </li>
-          </div>
-          {% endfor %}
-        </form>
+        <div>
+          <h3 class="text-primary mb-3">Let's see what you have to do today</h3>
+          <form method="POST" id="taskForm">
+            {% csrf_token %}
+            {% for task in tasks %}
+            <div class="list-group shadow">
+              <div data-task-id="{{ task.id }}" class="task-item">
+                <li class="p-3 list-group-item">
+                  <div class="d-flex justify-content-between title-box">
+                    <span><input class="task-checkbox mx-3" name="completed_tasks" type="checkbox" value="{{ task.id }}" id="task_{{ task.id }}"  {% if task.id|stringformat:"s" in completed_tasks %}
+                                                                      checked disabled
+                                                                  {% endif %}
+                                                                  onchange="markTaskCompleted(this)"></span>
+                    <p>
+                      {{ task.title }}
+                    </p>
+                    <div class="tasks-control">
+                      <a href="{% url 'tasks' %}" type="button" class="_btn _btn-primary btn-floating btn-lg">
+                        <i class="bi bi-pen-fill pe-none"></i>
+                      </a>
+                    </div>
+                  </div>
+                </li>
+                <div class="mt-0 border">
+                  <div class="d-flex justify-content-between task-detail-row d-none p-3">
+                    <span class="mx-4" colspan="7">Due Date: {{ task.due_date|date:"F d, Y" }}</span>
+                    <span class="mx-4" colspan="7">Priority: {%if task.priority == "H"%}High{% elif task.priority == "M"%}Medium{% else %} Low {% endif %} </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </form>
+        </div>
       </div>
-      {% else %}
-      <h3 class="my-0 mx-auto text-center">You have no tasks <span><a href="{% url 'create-task' %}"> create one</a> now</span></h3>
-      {% endif %}
     </div>
+    {% else %}
+    <h4 class="my-0 mx-auto text-center">You have no tasks <span><a href="{% url 'create-task' %}"> create one</a> now</span></h4>
+    {% endif %}
   </div>
-</div>
-</div>
-</div>
 </div>
 <script>
   function markTaskCompleted(checkbox) {
@@ -79,7 +92,21 @@
         data: { csrfmiddlewaretoken: csrfToken },
         success: function () {
           console.log('Task marked as completed');
-          // You can perform additional actions here if needed
+          var taskItem = checkbox.closest('.task-item');
+          // Disable the checkbox and update task item class
+          taskItem.classList.add('is_completed');
+          checkbox.disabled = true;
+          // Remove the task item from the list
+          taskItem.remove();
+          // Store the completed task ID in local storage
+          var completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || [];
+          completedTasks.push(taskId);
+          localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
+          // Check the corresponding task checkbox in the tasks page
+          var tasksPageCheckbox = document.getElementById('task_' + taskId);
+          if (tasksPageCheckbox) {
+            tasksPageCheckbox.checked = true;
+          }
         },
         error: function (error) {
           console.log('Error marking task as completed', error);
@@ -92,4 +119,44 @@
     }
   }
 </script>
+<script>
+  const taskItems = document.querySelectorAll('.task-item');
+  taskItems.forEach((item) => {
+    item.addEventListener('click', () => {
+      const detailBox = item.querySelector('.task-detail-row');
+      if (detailBox) {
+        detailBox.classList.toggle('d-none');
+      }
+    });
+  });
+</script>
 {% endblock %}
+<!-- {% if task.complete %}checked{% endif %}{% if task.complete %}disabled{% endif %} -->
+<!-- <div class="daily-tasks m-4">
+  <div class="list-group shadow">
+    <div data-task-id="{{ task.id }}" class="task-item">
+      <li class="p-3 list-group-item">
+        <div class="d-flex justify-content-between title-box">
+          <span><input class="task-checkbox mx-3" name="completed_tasks" type="checkbox" value="{{ task.id }}" id="task_{{ task.id }}"  {% if task.id|stringformat:"s" in completed_tasks %}
+                                                          checked disabled
+                                                      {% endif %}
+                                                      onchange="markTaskCompleted(this)"></span>
+          <p>
+            {{ task.title }}
+          </p>
+          <div class="tasks-control">
+            <a href="{% url 'tasks' %}" type="button" class="_btn _btn-primary btn-floating btn-lg">
+              <i class="bi bi-pen-fill pe-none"></i>
+            </a>
+          </div>
+        </div>
+      </li>
+      <div class="mt-0 border">
+        <div class="d-flex justify-content-between task-detail-row d-none p-3">
+          <span class="mx-4" colspan="7">Due Date: {{ task.due_date|date:"F d, Y" }}</span>
+          <span class="mx-4" colspan="7">Priority: {%if task.priority == "H"%}High{% elif task.priority == "M"%}Medium{% else %} Low {% endif %} </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
