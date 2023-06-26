@@ -9,6 +9,8 @@ pillow = "*"
 pycodestyle = "*"
 psycopg2 = "*"
 django-tempus-dominus = "*"
+requests = "*"
+python-decouple = "*"
 
 [dev-packages]
 

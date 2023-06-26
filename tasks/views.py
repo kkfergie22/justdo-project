@@ -5,6 +5,9 @@ from .models import Task
 from django.http import JsonResponse
 from .forms import TaskForm
 from django.utils import timezone
+import requests
+import datetime
+from decouple import config
 
 
 @login_required
@@ -59,6 +62,42 @@ def delete_task(request, pk):
 
 @login_required
 def dashboard(request):
+    """Renders the dashboard"""
+    city = "Accra"
+    # Weather API
+    api_key = config("WEATHER_API_KEY")
+    base_url = "https://api.openweathermap.org/data/3.0/onecall?lat=5.55&lon=-0.20&units=metric&exclude=hourly,minutely&appid={}"  # noqa
+    city_weather = requests.get(base_url.format(api_key)).json()
+
+    # Get the current weather
+    current_weather = city_weather['current']
+    current_day = datetime.datetime.fromtimestamp(current_weather['dt']).\
+        strftime('%A')
+    current_weather_context = {
+        "city": city,
+        "day": current_day,
+        "temperature": round(current_weather['temp']),
+        "main": current_weather['weather'][0]['main'],
+        "description": current_weather['weather'][0]['description'],
+        "icon": current_weather['weather'][0]['icon']
+    }
+
+    # Get the daily weather
+    daily_weather = city_weather.get('daily', [])
+    daily_forecast = []
+    for day in daily_weather:
+        date = day.get('dt')
+        date_obj = datetime.datetime.fromtimestamp(date)
+        day_of_week = date_obj.strftime('%A')
+        icon = day.get('weather', [{}])[0].get('icon')
+        temperature = round(day.get('temp', {}).get('day'))
+
+        daily_forecast.append({
+            'day': day_of_week,
+            'icon': icon,
+            'temperature': temperature
+        })
+
     completed_tasks = request.session.get('completed_tasks', [])
     completed_tasks = [str(task_id) for task_id in completed_tasks]
 
@@ -88,7 +127,9 @@ def dashboard(request):
         "in_progress": in_progress,
         "not_started": not_started,
         "due_today": due_today,
-        "xp": xp
+        "xp": xp,
+        "current_weather": current_weather_context,
+        "daily_weather": daily_forecast,
         }
     return render(request, "tasks/dashboard.html", context)
 

@@ -1,3 +1,9 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Poppins', sans-serif;
 }
@@ -48,4 +54,23 @@ body {
   text-decoration: line-through;
   display: none;
   opacity: 0.6;
+}
+
+.weather-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.weather-icon.large {
+  width: 80px;
+  height: 80px;
+}
+
+.daily__card {
+  max-width: 100px;
+}
+
+.daily__weather__day {
+  font-size: 0.75rem;
+  color: #007bff;
 }

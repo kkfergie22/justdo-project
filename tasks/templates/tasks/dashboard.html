@@ -6,32 +6,80 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-6 p-5">
-      <div class="row border rounded-2 p-5">
-        <h5 class="text-primary">Welcome, {{ user.username }}</h5>
-        <p class="fs-4">
-          What are you doing today? <a href="{% url 'create-task' %}" class="text-decoration-none">Create a task</a>
-        </p>
-        <div class="d-flex p-3">
-          <div class="d-flex justify-content-center align-items-center border border-primary rounded-circle border-3 mx-3" style="width: 200px; height: 200px;">
-            <h1 class="fw-bold fs-7 text-primary">{{ xp }} XP</h1>
+      <div class="border shadow rounded-2 p-5">
+        <section class="d-flex flex-sm-column gap-2 border shadow rounded-2 p-2 m-2">
+          <div>
+            <h5 class="text-primary">Welcome, {{ user.username }}</h5>
+            <p class="fs-4">
+              What are you doing today? <a href="{% url 'create-task' %}" class="text-decoration-none">Create a task</a>
+            </p>
           </div>
-          <div class="p-3 mx-4 list-group">
+          <div class="d-flex p-3">
+            <div class="d-flex justify-content-center align-items-center border border-primary rounded-circle border-3 mx-3" style="width: 200px; height: 200px;">
+              <h1 class="fw-bold fs-7 text-primary">{{ xp }} XP</h1>
+            </div>
+            <div class="p-3 mx-4 list-group">
 
-            <p class="list-group-item text-primary">
-              You have <span class="fw-bold">{{ due_today }}</span> {% if due_today == 1 %}task due today{% else %} tasks due today {% endif %}
-            </p>
+              <p class="list-group-item text-primary">
+                You have <span class="fw-bold">{{ due_today }}</span> {% if due_today == 1 %}task due today{% else %} tasks due today {% endif %}
+              </p>
 
-            <p class="list-group-item text-primary">
-              You have <span class="fw-bold">{{ in_progress }}</span> {% if in_progress == 1 %}task in progress{% else %} tasks in progress {% endif %}
-            </p>
+              <p class="list-group-item text-primary">
+                You have <span class="fw-bold">{{ in_progress }}</span> {% if in_progress == 1 %}task in progress{% else %} tasks in progress {% endif %}
+              </p>
 
-            <p class="list-group-item text-primary">
-              You have <span class="fw-bold">{{ not_started }}</span> {% if not_started == 1 %}task pending{% else %} tasks pending {% endif %}
-            </p>
+              <p class="list-group-item text-primary">
+                You have <span class="fw-bold">{{ not_started }}</span> {% if not_started == 1 %}task pending{% else %} tasks pending {% endif %}
+              </p>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- Weather Section -->
+        <section class="shadow rounded-2 d-flex flex-sm-column column-gap-3 p-3 justify-content-center" style="max-width: 100%">
+          <div class="header d-flex align-items-center">
+            <div class="header-left w-50 d-flex align-items-center">
+              <div alt="weather icon">
+                <img class="object-fit-contain weather-icon large mx-3" src="http://openweathermap.org/img/w/{{ current_weather.icon }}.png" width="80px" height="80px">
+              </div>
+              <div class="d-flex justify-content-center flex-sm-column header-current-temp">
+                <span class="weather-temp">{{ current_weather.temperature }}&deg;C</span>
+                <span class="day text-primary">
+                  {{ current_weather.day }}
+                </span>
+              </div>
+            </div>
+            <div class="w-50 d-flex justify-content-center align-items-center">
+              <div class="header-middle d-flex flex-sm-column align-items-center justify-content-center">
+                <div class="d-flex  align-items-center justify-content-center">
+                  <img class="object-fit-contain" src="{% static 'images/resources/icons/geo-alt-fill.svg' %}" width="20px" alt="location-icon">
+                  <div class="weather-city" data-current-city><span>{{ current_weather.city }}</span>
+                  </div>
+                </div>
+                <div class="header-right align-items-center text-primary">
+
+                  {{ current_weather.description }}
+
+                </div>
+              </div>
+            </div>
 
           </div>
-        </div>
+          <div class="daily__weather d-flex justify-content-center align-items-center gap-2">
+            {% for forecast in daily_weather %}
+            <div class="daily__card d-flex flex-sm-column align-items-center shadow rounded-2 border border-white">
+              <img class="weather-icon" src="http://openweathermap.org/img/w/{{ forecast.icon }}.png" alt="daily__Weather__icon">
+              <div class="daily__weather__day">
+                {{ forecast.day }}
+              </div>
+              <div class="daily__weather__temp">{{ forecast.temperature }}&deg;C
+              </div>
+            </div>
+            {% endfor %}
+          </div>
 
+        </section>
       </div>
     </div>
     <!-- Task list section -->
