@@ -1,102 +1,85 @@
 {% load static %}
 <!-- Navbar -->
+{% if user.is_authenticated %}
 {% if request.path == '/' %}
-<nav class="navbar navbar-expand-lg navbar-light bg-primary">
-  <!-- Container wrapper -->
-  <div class="{% if user.is_authenticated %}container justify-content-center align-items-center w-50{% else %} container-fluid {% endif %}">
-    <!-- Toggle button -->
-    <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <i class="fas fa-bars"></i>
-    </button>
-
-    <!-- Collapsible wrapper -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <!-- Navbar brand -->
-      <a class="navbar-brand mt-2 mt-lg-0" href="{% url 'home_page' %}">
-        <img src="{% static 'images/logos/png/justdo-high-resolution-logo-white-on-transparent-background.png' %}" height="15" alt="JustDO Logo" loading="lazy" />
-      </a>
-      <!-- Left links -->
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+<header class="navbar navbar-expand-lg sticky-top">
+  <nav class="container">
+    <a class="navbar-brand" href="{% url 'home_page' %}">
+      <img src="{% static 'images/logos/png/justdo-high-resolution-logo-white-on-transparent-background.png' %}" alt="logo-white" style="width: 100px; height: auto" />
+    </a>
+    <div class="xp-box nav-item special-li">
+      <i class="bi bi-trophy-fill text-warning me-2"></i>
+      <span class="xp-value me-2 text-warning fs-4">{{ xp }}<sup class="xp-title fs-6 text-warning mb-3">XP</sup></span>
+    </div>
+    <a class="text-white navbar-toggler" role="button" data-bs-toggle="collapse" data-bs-target="#NavMenuLinks">
+      <span><i class="bi bi-list-ul"></i></span>
+    </a>
+    <div class="collapse navbar-collapse" id="NavMenuLinks">
+      <ul class="nav navbar-nav ms-auto mb-2 mb-lg-0 nav-pills">
         <li class="nav-item">
-          <a class="nav-link mx-3" href="{% url 'dashboard' %}" style="color: #ffffff">Dashboard</a>
+          <a href="{% url 'tasks' %}" class="nav-link px-2" style="color: #ffffff">My Tasks</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link mx-3" href="{% url 'tasks' %}" style="color: #ffffff">Tasks</a>
+          <a href="{% url 'dashboard' %}" class="nav-link px-2" style="color: #ffffff">Dashboard</a>
+        </li>
+        <li class="nav-item special-li">
+          <div class="dropdown">
+            <a href="#" class="text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
+              <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle" height="25" alt="Black and White Portrait of a Man" loading="lazy" /><span class="text-white">{{ user.username }}</span>
+            </a>
+            <ul class="dropdown-menu bg-none">
+              <li>
+                <a class="dropdown-item text-primary" href="{% url 'tasks' %}">My Tasks</a>
+              </li>
+              <li>
+                <a class="dropdown-item text-primary" href="{% url 'dashboard' %}">Dashboard</a>
+              </li>
+              <li>
+                <a class="dropdown-item text-primary" href="{% url 'logout' %}">Logout</a>
+              </li>
+            </ul>
+          </div>
         </li>
       </ul>
-      <!-- Left links -->
     </div>
-    <!-- Collapsible wrapper -->
-
-    <!-- Right elements -->
-    <div class="d-flex align-items-center">
-      <!-- Avatar -->
-      <div class="dropdown">
-        <a class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdownMenuAvatar" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
-          <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle" height="25" alt="Black and White Portrait of a Man" loading="lazy" /><span class="text-white">{{ user.username }}</span>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
-          <li>
-            <a class="dropdown-item" href="{% url 'tasks' %}">My Tasks</a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <!-- Right elements -->
-  </div>
-  <!-- Container wrapper -->
-</nav>
+  </nav>
+</header>
 {% else %}
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <!-- Container wrapper -->
-  <div class="{% if user.is_authenticated %}container justify-content-center align-items-center w-50{% else %} container-fluid {% endif %}">
-    <!-- Toggle button -->
-    <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <i class="fas fa-bars"></i>
-    </button>
-
-    <!-- Collapsible wrapper -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <!-- Navbar brand -->
-      <a class="navbar-brand mt-2 mt-lg-0" href="{% url 'home_page' %}">
-        <img src="{% static 'images/logos/png/logo-no-background.png' %}" height="15" alt="JustDO Logo" loading="lazy" />
-      </a>
-      <!-- Left links -->
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+<header class="navbar navbar-expand-md bg-light sticky-top">
+  <nav class="container">
+    <a class="navbar-brand" href="{% url 'home_page' %}">
+      <img src="{% static 'images/logos/png/logo-no-background.png' %}" alt="logo-white" style="width: 100px; height: auto" />
+    </a>
+    <div class="xp-box nav-item special-li">
+      <i class="bi bi-trophy-fill text-warning me-2"></i>
+      <span class="xp-value me-2 text-warning fs-4">{{ xp }}<sup class="xp-title fs-6 text-primary mb-3">XP</sup></span>
+    </div>
+    <a class="text-white navbar-toggler" role="button" data-bs-toggle="collapse" data-bs-target="#NavMenuLinks">
+      <span><i class="bi bi-list-ul text-primary"></i></span>
+    </a>
+    <div class="collapse navbar-collapse" id="NavMenuLinks">
+      <ul class="nav navbar-nav ms-auto mb-2 mb-lg-0 nav-pills">
         <li class="nav-item">
-          <a class="nav-link mx-3" href="{% url 'dashboard' %}" style="color: #0088ff">Dashboard</a>
+          <a class="text-primary nav-link px-2" href="{% url 'tasks' %}">My Tasks</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link mx-3" href="{% url 'tasks' %}" style="color: #0088ff">Tasks</a>
+          <a class="text-primary nav-link px-2" href="{% url 'dashboard' %}">Dashboard</a>
+        </li>
+        <li class="nav-item special-li">
+          <div class="dropdown">
+            <a href="#" class="text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
+              <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle" height="25" alt="Black and White Portrait of a Man" loading="lazy" /><span class="text-primary">{{ user.username }}</span>
+            </a>
+            <ul class="dropdown-menu bg-none">
+              <li>
+                <a class="dropdown-item text-primary" href="{% url 'logout' %}">Logout</a>
+              </li>
+            </ul>
+          </div>
         </li>
       </ul>
-      <!-- Left links -->
     </div>
-    <!-- Collapsible wrapper -->
-
-    <!-- Right elements -->
-    <div class="d-flex align-items-center">
-      <!-- Avatar -->
-      <div class="dropdown">
-        <a class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdownMenuAvatar" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
-          <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle" height="25" alt="Black and White Portrait of a Man" loading="lazy" />{{ user.username }}
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
-          <li>
-            <a class="dropdown-item" href="{% url 'tasks' %}">My Tasks</a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <!-- Right elements -->
-  </div>
-  <!-- Container wrapper -->
-</nav>
+  </nav>
+</header>
 {% endif %}
-<!-- Navbar -->
+{% endif %}

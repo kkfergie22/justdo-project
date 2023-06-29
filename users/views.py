@@ -7,7 +7,9 @@ from .models import UserProfile
 
 
 def index(request):
-    return render(request, "index_carousel.html")
+    xp = request.user.userprofile.xp
+    context = {"xp": xp}
+    return render(request, "index_carousel.html", context)
 
 
 def register(request):

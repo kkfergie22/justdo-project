@@ -15,7 +15,8 @@ def list_tasks(request):
     """Renders the task list"""
     tasks = Task.objects.all()
     form = TaskForm()
-    context = {"tasks": tasks, "form": form}
+    xp = request.user.userprofile.xp
+    context = {"tasks": tasks, "form": form, "xp": xp}
     return render(request, "tasks/task_list.html", context)
 
 
@@ -83,7 +84,7 @@ def dashboard(request):
     }
 
     # Get the daily weather
-    daily_weather = city_weather.get('daily', [])
+    daily_weather = city_weather.get('daily', [])[1:]
     daily_forecast = []
     for day in daily_weather:
         date = day.get('dt')

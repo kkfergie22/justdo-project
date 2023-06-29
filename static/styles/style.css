@@ -74,3 +74,66 @@ body {
   font-size: 0.75rem;
   color: #007bff;
 }
+
+.grid-col-span-7 {
+  grid-column: span 7;
+}
+.grid-col-span-4 {
+  grid-column: span 4;
+}
+.grid-col-span-3 {
+  grid-column: span 3;
+}
+.grid-row-span-4 {
+  grid-row: span 4;
+}
+.grid-row-span-2 {
+  grid-row: span 2;
+}
+
+.weather-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1.5rem;
+  width: min(95%, 70rem);
+  padding-block: 2rem;
+  margin-inline: auto;
+}
+
+/* Media Queries */
+@media (min-width: 320px) and (max-width: 400px) {
+  .xp-box {
+    margin-left: 3rem;
+  }
+}
+@media (min-width: 401px) and (max-width: 450px) {
+  .xp-box {
+    margin-left: 5rem;
+  }
+}
+@media (min-width: 450px) and (max-width: 520px) {
+  .xp-box {
+    margin-left: 10rem;
+  }
+}
+@media (min-width: 520px) and (max-width: 600px) {
+  .xp-box {
+    margin-left: 15rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .xp-box {
+    margin-left: 28rem;
+  }
+}
+@media (min-width: 1200px) {
+  .xp-box {
+    margin-left: 38rem;
+  }
+}
+@media (min-width: 1400px) {
+  .xp-box {
+    margin-left: 50rem;
+  }
+}

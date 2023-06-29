@@ -6,7 +6,11 @@
 <!-- prettier-ignore -->
 {% block content %}
 <!-- Navigation -->
+{% if user.is_authenticated %}
+{% include 'profile_navigation.html' %}
+{% else %}
 {% include 'base_nav.html' %}
+{% endif %}
 <div class="container mt-5">
   <h1 class="text-center mb-4">Features</h1>
 
