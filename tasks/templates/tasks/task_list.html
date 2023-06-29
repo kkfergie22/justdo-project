@@ -32,7 +32,7 @@
                 <tbody>
                   {% for task in tasks %}
                   <tr>
-                    <td><input type="checkbox" value="{{ task.id }}" id="task_{{ task.id }}" {% if task.complete %}checked{% endif %}{% if task.complete %}disabled{% endif %}onchange="markTaskCompleted(this)"></td>
+                    <td><input type="checkbox" value="{{ task.id }}" id="task_{{ task.id }}" {% if task.is_complete %}checked{% endif %}{% if task.is_complete %}disabled{% endif %} onchange="markTaskCompleted(this)"></td>
                     <td>{{ task.title }}</td>
                     <td>{% if task.status == "P" %}<span class="badge rounded-pill d-inline bg-primary">Not Started</span>{% elif task.status == "C" %}<span class="badge rounded-pill d-inline bg-success">Completed</span>{% else %}<span class="badge rounded-pill d-inline bg-warning">In Progress</span>{% endif %}</td>
                     <td>{% if task.priority == "H" %}<span class="badge rounded-pill d-inline bg-danger">High</span>{% elif task.priority == "M" %}<span class="badge rounded-pill d-inline bg-warning">Medium</span>{% else %}<span class="badge rounded-pill d-inline bg-primary">Low</span>{% endif %}</td>
@@ -111,7 +111,7 @@
 {% endfor %}
 
 <script>
-  function markTaskCompleted(checkbox) {
+  function markTaskCompleted(checkbox, sourcePage) {
     var taskId = checkbox.value;
     var csrfToken = '{{ csrf_token }}';
 
@@ -126,10 +126,12 @@
           var taskItem = checkbox.closest('.task-item')
           taskItem.classList.add('is_completed');
           checkbox.disabled = true;
-          // Check the corresponding task checkbox in the tasks page
+
+          // Update the checkbox status in the tasks page
           var tasksPageCheckbox = document.getElementById('task_' + taskId);
           if (tasksPageCheckbox) {
             tasksPageCheckbox.checked = true;
+            tasksPageCheckbox.disabled = true;
           }
         },
         error: function (error) {
@@ -138,8 +140,6 @@
           checkbox.checked = false; // Uncheck the checkbox if an error occurs
         }
       });
-    } else {
-      // Handle the case when the checkbox is unchecked if needed
     }
   }
 </script>

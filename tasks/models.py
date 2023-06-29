@@ -153,6 +153,15 @@ class Task(models.Model):
         now = timezone.now().date()
         return self.due_date < now
 
+    def is_complete(self):
+        """
+        Check if the task is complete.
+
+        Returns:
+            bool: True if the task is complete, False otherwise.
+        """
+        return self.status == self.COMPLETED
+
     @property
     def created_by(self):
         """

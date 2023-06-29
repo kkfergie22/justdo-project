@@ -90,14 +90,15 @@
           <form method="POST" id="taskForm">
             {% csrf_token %}
             {% for task in tasks %}
+            {% if task.status != 'C' %}
             <div class="list-group shadow">
               <div data-task-id="{{ task.id }}" class="task-item">
                 <li class="p-3 list-group-item">
                   <div class="d-flex justify-content-between title-box">
                     <span><input class="task-checkbox mx-3" name="completed_tasks" type="checkbox" value="{{ task.id }}" id="task_{{ task.id }}"  {% if task.id|stringformat:"s" in completed_tasks %}
-                                                                      checked disabled
-                                                                  {% endif %}
-                                                                  onchange="markTaskCompleted(this)"></span>
+                                                                                  checked disabled
+                                                                              {% endif %}
+                                                                              onchange="markTaskCompleted(this)"></span>
                     <p class="flex-grow-1 overflow-hidden text-truncate">
                       {{ task.title }}
                     </p>
@@ -116,6 +117,7 @@
                 </div>
               </div>
             </div>
+            {% endif %}
             {% endfor %}
           </form>
         </div>
@@ -129,7 +131,7 @@
 
 
 <script>
-  function markTaskCompleted(checkbox) {
+  function markTaskCompleted(checkbox, sourcePage) {
     var taskId = checkbox.value;
     var csrfToken = '{{ csrf_token }}';
 
@@ -140,29 +142,27 @@
         data: { csrfmiddlewaretoken: csrfToken },
         success: function () {
           console.log('Task marked as completed');
-          var taskItem = checkbox.closest('.task-item');
-          // Disable the checkbox and update task item class
+          // Disable the checkbox and update the task item status
+          var taskItem = checkbox.closest('.task-item')
           taskItem.classList.add('is_completed');
           checkbox.disabled = true;
-          // Remove the task item from the list
-          taskItem.remove();
-          // Store the completed task ID in local storage
-          var completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || [];
-          completedTasks.push(taskId);
-          localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
-          // Check the corresponding task checkbox in the tasks page
+
+          // Update the checkbox status in the tasks page
           var tasksPageCheckbox = document.getElementById('task_' + taskId);
           if (tasksPageCheckbox) {
             tasksPageCheckbox.checked = true;
+            tasksPageCheckbox.disabled = true;
           }
         },
         error: function (error) {
           console.log('Error marking task as completed', error);
+          // Handle the error if necessary
           checkbox.checked = false; // Uncheck the checkbox if an error occurs
         }
       });
     }
   }
+
 </script>
 <script>
   const taskItems = document.querySelectorAll('.task-item');

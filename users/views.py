@@ -7,9 +7,12 @@ from .models import UserProfile
 
 
 def index(request):
-    xp = request.user.userprofile.xp
-    context = {"xp": xp}
-    return render(request, "index_carousel.html", context)
+    if request.user.is_authenticated:
+        xp = request.user.userprofile.xp
+        context = {"xp": xp}
+        return render(request, "index_carousel.html", context)
+    else:
+        return render(request, "index_carousel.html")
 
 
 def register(request):
