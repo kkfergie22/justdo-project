@@ -1,0 +1,43 @@
+@media (min-width: 750px) {
+  .special-li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media (max-width: 701px) {
+  .xp-summary {
+    display: none;
+  }
+  .xp-badge {
+    display: inline-block;
+    margin-right: 0;
+  }
+  .weather-summary {
+    display: inline-block;
+  }
+}
+@media (min-width: 701px) {
+  .weather-summary {
+    display: none;
+  }
+  .xp-badge {
+    display: none;
+  }
+}
+
+@media (max-width: 370px) {
+  .weather-box {
+    flex-wrap: wrap;
+  }
+  .city-desc {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .city-desc {
+    font-size: 0.5rem;
+  }
+}
