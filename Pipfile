@@ -11,6 +11,7 @@ psycopg2 = "*"
 django-tempus-dominus = "*"
 requests = "*"
 python-decouple = "*"
+gunicorn = "*"
 
 [dev-packages]
 
